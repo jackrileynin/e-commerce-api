@@ -3,20 +3,32 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
 
+//problem: Postman route requests respond with only a obeject contianing the properties isFullfilled and isRejected, both returning false.
+
 // get all products
 router.get('/', (req, res) => {
+  const allProducts = Product.findAll({
+    include: [{model:Category}, {model:Tag}]
+  })
+  res.status(200).json(allProducts)
   // find all products
   // be sure to include its associated Category and Tag data
 });
 
 // get one product
 router.get('/:id', (req, res) => {
+  const idProduct = Product.findByPk({
+    where:  {id: req.params.id},
+    include: [{model:Category}, {model:Tag}]
+  })
+  res.status(200).json(idProduct)
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
 });
 
 // create new product
 router.post('/', (req, res) => {
+   
   /* req.body should look like this...
     {
       product_name: "Basketball",
@@ -94,6 +106,12 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  const deleteProduct = Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  res.status(200).json(deleteProduct)
 });
 
 module.exports = router;
