@@ -48,7 +48,7 @@ router.put('/:id', async (req, res) => {
       { category_name: req.body.category_name },
       { where: { id: req.params.id } }
     );
-    res.status(200).json({ message: "Category updated successfully" });
+    res.status(200).json(updateCategory).json({ message: "Category updated successfully" });
   } catch (error) {
     console.error("Error updating category:", error);
     res.status(500).json({ error: "Something went wrong while updating the category" });
@@ -58,7 +58,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const deleteCategory = await Category.destroy({ where: { id: req.params.id } });
-    res.status(200).json({ message: "Category deleted successfully" });
+    res.status(200).json(deleteCategory).json({ message: "Category deleted successfully" });
   } catch (error) {
     console.error("Error deleting category:", error);
     res.status(500).json({ error: "Something went wrong while deleting the category" });
